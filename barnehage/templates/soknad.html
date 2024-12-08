@@ -55,6 +55,79 @@
 
     <label for="brutto_inntekt_husholdning">Brutto Inntekt Husholdning:</label>
     <input type="number" id="brutto_inntekt_husholdning" name="brutto_inntekt_husholdning" required /><br><br>
-    <input type="submit" value="Send søknad"> 
+    <a href="{{ url_for('gratulerer') }}">Send Soknad</a>
 </form>
+<form action="gratulerer" method="post">
+    <!-- Existing form fields -->
+
+   
+    <form>
+        <fieldset>
+            <legend>Liste over Barnehager (Prioritert):</legend>
+            <div>
+                <select id="barnehage-select" required>
+                    <option value="" disabled selected>Velg barnehage</option>
+                    <option value="Sunshine Preschool">Sunshine Preschool</option>
+                    <option value="Happy Days Nursery">Happy Days Nursery</option>
+                    <option value="123 Learning Center">123 Learning Center</option>
+                    <option value="ABC Kindergarten">ABC Kindergarten</option>
+                    <option value="Tiny Tots Academy">Tiny Tots Academy</option>
+                    <option value="Giggles and Grins Childcare">Giggles and Grins Childcare</option>
+                    <option value="Playful Pals Daycare">Playful Pals Daycare</option>
+                </select>
+                <button type="button" onclick="addSelectedBarnehage()">Legg til</button>
+                <button type="button" onclick="resetBarnehageList()">Reset</button>
+            </div>
+            <div id="barnehager-list" style="margin-top: 10px;">
+            </div>
+        </fieldset>
+    </form>
+    
+    <script>
+    let originalOptions = [];
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectElement = document.getElementById('barnehage-select');
+        originalOptions = Array.from(selectElement.options).map(option => ({
+            value: option.value,
+            text: option.text,
+        }));
+    });
+    
+    function addSelectedBarnehage() {
+        const selectElement = document.getElementById('barnehage-select');
+        const selectedValue = selectElement.value;
+        const selectedText = selectElement.options[selectElement.selectedIndex].text;
+    
+        if (selectedValue) {
+            const barnehagerList = document.getElementById('barnehager-list');
+    
+            const listItem = document.createElement('div');
+            listItem.textContent = selectedText;
+    
+            barnehagerList.appendChild(listItem);
+            selectElement.remove(selectElement.selectedIndex);
+    
+            selectElement.value = '';
+        } else {
+            alert('Vennligst velg en barnehage før du legger til.');
+        }
+    }
+    
+    function resetBarnehageList() {
+        const barnehagerList = document.getElementById('barnehager-list');
+        barnehagerList.innerHTML = '';
+    
+        const selectElement = document.getElementById('barnehage-select');
+        selectElement.innerHTML = '';
+    
+        originalOptions.forEach(optionData => {
+            const option = document.createElement('option');
+            option.value = optionData.value;
+            option.textContent = optionData.text;
+            selectElement.appendChild(option);
+        });
+        selectElement.value = '';
+    }
+    </script>
 {% endblock %}

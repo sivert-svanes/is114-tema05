@@ -104,7 +104,9 @@ def statistikk():
 
     return render_template('statistikk.html', kommune=kommune, chart_html=chart_html, error=error)
 
-
+@app.route('/gratulerer')
+def gratulerer():
+    return render_template('gratulerer.html')
 """
 Referanser
 [1] https://stackoverflow.com/questions/21668481/difference-between-render-template-and-redirect
